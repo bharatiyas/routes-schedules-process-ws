@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "38fdda8b-3731-41d7-9a15-cb0a1d323c98",
+		"name": "routes-schedules-process-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Routes-Schedules-Process-API-GET-Routes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{rt-sch-process-api-host}}:{{rt-sch-process-api-port}}/api/booking/sea/routes",
+					"protocol": "http",
+					"host": [
+						"{{rt-sch-process-api-host}}"
+					],
+					"port": "{{rt-sch-process-api-port}}",
+					"path": [
+						"api",
+						"booking",
+						"sea",
+						"routes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Routes-Schedules-Process-API-GET-Schedules",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/api/booking/sea/schedules?companyCode=cc&departureLocationCode=BNE&destinationLocationCode=BKK&requestTimezone=AEST",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"booking",
+						"sea",
+						"schedules"
+					],
+					"query": [
+						{
+							"key": "companyCode",
+							"value": "cc"
+						},
+						{
+							"key": "departureLocationCode",
+							"value": "BNE"
+						},
+						{
+							"key": "destinationLocationCode",
+							"value": "BKK"
+						},
+						{
+							"key": "requestTimezone",
+							"value": "AEST"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
