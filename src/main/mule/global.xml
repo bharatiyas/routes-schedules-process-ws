@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="21618662-8050-4551-baba-f6b14c3cff8d" file="config-${env}.yaml" />
+	<global-property doc:name="Global Property" doc:id="202ac86b-0fdf-486e-9cbf-c1dcad4ef207" name="env" value="dev" />
+	<http:request-config name="Transnational_SystemAPI_HTTP_Req_Conf" doc:name="HTTP Request configuration" doc:id="7a70c80b-62eb-4404-95de-9028ebcdac33" >
+		<http:request-connection host="${system-api.transnational.host}" port="${system-api.transnational.port}" />
+	</http:request-config>
+	<http:request-config name="FirstCoach_SystemAPI_HTTP_Req_Conf" doc:name="HTTP Request configuration" doc:id="2cfe7e93-9a27-4b84-acee-4f7f0a5a9811" >
+		<http:request-connection protocol="HTTPS" host="${system-api.firstcoach.host}" port="${system-api.firstcoach.port}" >
+			<tls:context >
+				<tls:trust-store insecure="true" />
+			</tls:context>
+		</http:request-connection>
+	</http:request-config>
+</mule>
