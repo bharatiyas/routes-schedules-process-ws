@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="routes-api-response-json" format="json">
+      <types:shape format="weave" example="examples/routes-api-response.json"><![CDATA[%dw 2.0
+
+type routes_api_response_json = Array<{|  companyCode: String,   originLocation: {|    locationCode: String,     locationDesc: String  |},   destinationLocation: {|    locationCode: String,     locationDesc: String  |}|}> {"example": "[{\\\"companyCode\\\":\\\"TransNational\\\",\\\"originLocation\\\":{\\\"locationCode\\\":\\\"BEN-SG\\\",\\\"locationDesc\\\":\\\"Beauna Vista Singapore\\\"},\\\"destinationLocation\\\":{\\\"locationCode\\\":\\\"KLG-MY\\\",\\\"locationDesc\\\":\\\"Klang Malaysia\\\"}}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="schedule-api-response-json" format="json">
+      <types:shape format="weave" example="examples/schedule-api-response.json"><![CDATA[%dw 2.0
+
+type schedule_api_response_json = {|
+  departureSchedules: Array<{|    availableSeats: Number {"typeId": "int"},     departureDateTime: String,     travelRoute: {|      destinationLocation: {|        locationCode: String,         locationDesc: String      |},       originLocation: {|        locationCode: String,         locationDesc: String      |}    |}  |}>
+|} {"example": "{\\\"departureSchedules\\\":[{\\\"availableSeats\\\":20,\\\"departureDateTime\\\":\\\"2019-04-30T16:41:41\\\",\\\"travelRoute\\\":{\\\"destinationLocation\\\":{\\\"locationCode\\\":\\\"KLG-MY\\\",\\\"locationDesc\\\":\\\"Klang Malaysia\\\"},\\\"originLocation\\\":{\\\"locationCode\\\":\\\"BEN-SG\\\",\\\"locationDesc\\\":\\\"Beauna Vista Singapore\\\"}}},{\\\"availableSeats\\\":30,\\\"departureDateTime\\\":\\\"2019-04-30T18:41:41\\\",\\\"travelRoute\\\":{\\\"destinationLocation\\\":{\\\"locationCode\\\":\\\"KLG-MY\\\",\\\"locationDesc\\\":\\\"Klang Malaysia\\\"},\\\"originLocation\\\":{\\\"locationCode\\\":\\\"BL-SG\\\",\\\"locationDesc\\\":\\\"Beauna Vista Singapore\\\"}}}]}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="transnational-routes-response-json" format="json">
+      <types:shape format="weave" example="examples/transnational-routes-response.json"><![CDATA[%dw 2.0
+
+type transnational_routes_response_json = Array<{|  originLocation: {| locationCode: String |},   destinationLocation: {| locationCode: String |}|}> {"example": "[{\\\"originLocation\\\":{\\\"locationCode\\\":\\\"BEN-SG\\\"},\\\"destinationLocation\\\":{\\\"locationCode\\\":\\\"KLG-MY\\\"}},{\\\"originLocation\\\":{\\\"locationCode\\\":\\\"BNE-AU\\\"},\\\"destinationLocation\\\":{\\\"locationCode\\\":\\\"BKK-TH\\\"}}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="firstcoach-routes-response-json" format="json">
+      <types:shape format="weave" example="examples/firstcoach-routes-response.json"><![CDATA[%dw 2.0
+
+type firstcoach_routes_response_json = Array<{|  originLocation: {| locationCode: String |},   destinationLocation: {| locationCode: String |}|}> {"example": "[{\\\"originLocation\\\":{\\\"locationCode\\\":\\\"BEN-SG\\\"},\\\"destinationLocation\\\":{\\\"locationCode\\\":\\\"KLG-MY\\\"}}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="firstcoach-schedule-response-json" format="json">
+      <types:shape format="weave" example="examples/firstcoach-schedule-response.json"><![CDATA[%dw 2.0
+
+type firstcoach_schedule_response_json = {|
+  departureSchedules: Array<{|    availableSeats: Number {"typeId": "int"},     departureDateTime: String,     travelRoute: {|      destinationLocation: {| locationCode: String |},       originLocation: {| locationCode: String |}    |}  |}>
+|} {"example": "{\\\"departureSchedules\\\":[{\\\"availableSeats\\\":20,\\\"departureDateTime\\\":\\\"2019-04-30T16:41:41.090Z\\\",\\\"travelRoute\\\":{\\\"destinationLocation\\\":{\\\"locationCode\\\":\\\"KLG-MY\\\"},\\\"originLocation\\\":{\\\"locationCode\\\":\\\"BEN-SG\\\"}}},{\\\"availableSeats\\\":30,\\\"departureDateTime\\\":\\\"2019-04-30T16:41:41.090Z\\\",\\\"travelRoute\\\":{\\\"destinationLocation\\\":{\\\"locationCode\\\":\\\"KLG-MY\\\"},\\\"originLocation\\\":{\\\"locationCode\\\":\\\"BL-SG\\\"}}}]}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#2d278d24-5972-42d6-87bd-0b1b1511a6c1">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="transnational-routes-response-json"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="routes-api-response-json"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#cfcce699-2354-4d30-ac21-8d0d3a8fadbf">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="firstcoach-routes-response-json"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="routes-api-response-json"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#26d5859e-1edd-4f34-8fd5-e1bbdb857de7">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="firstcoach-schedule-response-json"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="schedule-api-response-json"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#db5b7892-a2b9-4324-a88f-536e7a882a98">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="firstcoach-schedule-response-json"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="schedule-api-response-json"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

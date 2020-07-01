@@ -1,0 +1,14 @@
+http:
+  port: "8083" 
+  
+system-api:
+  transnational:
+    protocol: "http"
+    host: "localhost"
+    port: "8084"
+    
+  firstcoach:
+    protocol: "https"
+    host: "localhost"
+    port: "7072"
+    

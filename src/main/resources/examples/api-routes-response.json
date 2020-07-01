@@ -1,0 +1,13 @@
+[
+	{
+		"companyCode": "TransNational",
+		"originLocation": {
+			"locationCode": "BEN-SG",
+			"locationDesc": "Beauna Vista Singapore"
+		},
+		"destinationLocation": {
+			"locationCode": "KLG-MY",
+			"locationDesc": "Klang Malaysia"
+		}
+	}
+]

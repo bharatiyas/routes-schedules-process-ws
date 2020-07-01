@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="routesFlow" doc:id="d0412f36-9ae4-4c5e-b8e6-67d05fbbc6ab" >
+		<set-variable value="#[message.attributes.uriParams.transportType]" doc:name="Set transportType" doc:id="5bd36067-0b6e-440d-b7e1-60fbb7ee82b4" variableName="transportType"/>
+		<scatter-gather doc:name="Scatter-Gather" doc:id="5ef391b8-24b3-4d39-844f-0fb949e6afad" >
+			<route >
+				<try doc:name="Try" doc:id="7c55c034-63bc-4336-8f31-7bbbc049a07d" >
+					<http:request method="GET" doc:name="Route Request Transnational" doc:id="a94b2588-872e-4665-bbfb-14d84a48e609" config-ref="Transnational_SystemAPI_HTTP_Req_Conf" path="/api/{transportType}/transnational/routes">
+					<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"transportType" : vars.transportType
+}]]]></http:uri-params>
+				</http:request>
+					<error-handler >
+						<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="9a8de6ea-9c94-4774-87ab-295655d580ed" >
+							<set-payload value="#[[]]" doc:name="Set Payload" doc:id="2ded1964-a937-40a7-b9c0-c2d0ff053589" />
+						</on-error-continue>
+					</error-handler>
+				</try>
+				<logger level="INFO" doc:name="Logger" doc:id="742d88a5-49c5-4743-8d3b-a1a75a88f93d" message="#[payload]"/>
+				<ee:transform doc:name="Transform Message" doc:id="2d278d24-5972-42d6-87bd-0b1b1511a6c1" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	companyCode: "First Coach",
+	originLocation: {
+		locationCode: payload01.originLocation.locationCode
+	},
+	destinationLocation: {
+		locationCode: payload01.destinationLocation.locationCode
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</route>
+			<route >
+				<try doc:name="Try" doc:id="ae97234b-99df-44bb-ab24-40a03a172cd0" >
+					<http:request method="GET" doc:name="Route Request Firstcoach" doc:id="45ea20f9-99a9-41a1-8738-a9cae27feb3f" config-ref="FirstCoach_SystemAPI_HTTP_Req_Conf" path="/api/{transportType}/firstcoach/routes">
+					<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"transportType" : vars.transportType
+}]]]></http:uri-params>
+				</http:request>
+					<error-handler >
+						<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="9368751b-9600-4132-af73-70a550a98b3b" >
+							<set-payload value="#[[]]" doc:name="Set Payload" doc:id="368d8361-2ee9-480a-8f6c-cc20056f3952" />
+						</on-error-continue>
+					</error-handler>
+				</try>
+				<logger level="INFO" doc:name="Logger" doc:id="81190c23-c79d-4606-93ed-6bb95a2f0fc4" message="#[payload]"/>
+				<ee:transform doc:name="Transform Message" doc:id="cfcce699-2354-4d30-ac21-8d0d3a8fadbf" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	companyCode: "Transnational",
+	originLocation: {
+		locationCode: payload01.originLocation.locationCode
+	},
+	destinationLocation: {
+		locationCode: payload01.destinationLocation.locationCode
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</route>
+		</scatter-gather>
+		<ee:transform doc:name="Transform Message" doc:id="93469f79-5188-4ac5-9a05-011b0f2347be" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+flatten(payload..payload)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="scheduleFlow" doc:id="d4f81c92-8f2e-4afe-90e8-f3872a010660" >
+		<set-variable value="#[message.attributes.uriParams.transportType]" doc:name="Set transportType" doc:id="aab2c815-9caa-42ff-a145-c286dfb7e0d1" variableName="transportType"/>
+		<scatter-gather doc:name="Scatter-Gather" doc:id="6f6426e6-8e0b-4acf-a1b8-add9453a1db2" >
+			<route >
+				<try doc:name="Try" doc:id="1e2fd68a-1996-4b40-b625-b0114ec209dd" >
+					<http:request method="GET" doc:name="Schedule Request Transnational" doc:id="5f608855-c2c2-4392-b21c-7b6bd0fd79f5" config-ref="Transnational_SystemAPI_HTTP_Req_Conf" path="/api/{transportType}/transnational/schedules">
+					<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"transportType" : vars.transportType
+}]]]></http:uri-params>
+				</http:request>
+					<error-handler >
+						<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f365c46a-a5a8-4612-86d6-268541dbb162" >
+							<set-payload value="#[[]]" doc:name="Set Payload" doc:id="568d6c46-fa3a-45c6-83a6-f8801af800b4" />
+						</on-error-continue>
+					</error-handler>
+				</try>
+				<logger level="INFO" doc:name="Logger" doc:id="27de05fc-f126-4b36-9044-ad940e1364d7" message="#[payload]"/>
+				<ee:transform doc:name="Transform Message" doc:id="26d5859e-1edd-4f34-8fd5-e1bbdb857de7">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	departureSchedules: payload.departureSchedules map ( departureSchedule , indexOfDepartureSchedule ) -> {
+		availableSeats: departureSchedule.availableSeats,
+		departureDateTime: departureSchedule.departureDateTime,
+		travelRoute: {
+			destinationLocation: {
+				locationCode: departureSchedule.travelRoute.destinationLocation.locationCode
+			},
+			originLocation: {
+				locationCode: departureSchedule.travelRoute.originLocation.locationCode
+			}
+		}
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+			</route>
+			<route >
+				<try doc:name="Try" doc:id="9ec4cd75-04f0-458c-91f1-2ade3e20d58a" >
+					<http:request method="GET" doc:name="Schedule Request Firstcoach" doc:id="494e2a9a-3ad3-4ae8-ae80-6cb439bc8c72" config-ref="FirstCoach_SystemAPI_HTTP_Req_Conf" path="/api/{transportType}/firstcoach/schedules">
+					<http:uri-params><![CDATA[#[output application/java
+---
+{
+	"transportType" : vars.transportType
+}]]]></http:uri-params>
+					<http:query-params><![CDATA[#[output application/java
+---
+{
+	"departureLocationCode" : message.attributes.queryParams.departureLocationCode,
+	"destinationLocationCode" : message.attributes.queryParams.destinationLocationCode
+}]]]></http:query-params>
+				</http:request>
+					<error-handler >
+						<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f24f58d7-6b12-4dcd-8a5a-efec3da21e8c" >
+							<set-payload value="#[[]]" doc:name="Set Payload" doc:id="3d970bd3-21c4-4225-a23f-9967bb13ffee" />
+						</on-error-continue>
+					</error-handler>
+				</try>
+				<logger level="INFO" doc:name="Logger" doc:id="27fee9a0-0d93-49f6-a51a-0ed173456bc2" message="#[payload]"/>
+				<ee:transform doc:name="Transform Message" doc:id="db5b7892-a2b9-4324-a88f-536e7a882a98" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	departureSchedules: payload.departureSchedules map ( departureSchedule , indexOfDepartureSchedule ) -> {
+		availableSeats: departureSchedule.availableSeats,
+		departureDateTime: departureSchedule.departureDateTime,
+		travelRoute: {
+			destinationLocation: {
+				locationCode: departureSchedule.travelRoute.destinationLocation.locationCode
+			},
+			originLocation: {
+				locationCode: departureSchedule.travelRoute.originLocation.locationCode
+			}
+		}
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</route>
+		</scatter-gather>
+		<ee:transform doc:name="Transform Message" doc:id="c2b3e099-50dc-45a8-bad6-ef05a44851af" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+flatten(payload..payload)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
