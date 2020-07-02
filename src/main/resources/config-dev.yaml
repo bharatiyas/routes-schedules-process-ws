@@ -11,4 +11,6 @@ system-api:
     protocol: "https"
     host: "localhost"
     port: "7072"
+    username: "fcuser"
+    password: "bigsecret"
     
