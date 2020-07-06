@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
     <http:listener-config name="routes-and-schedules-process-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="${http.port}" />
     </http:listener-config>
-    <apikit:config name="routes-and-schedules-process-api-config" api="resource::4c4287b2-7066-4b83-864f-60985a79247e:routes-and-schedules-process-api:1.0.0:raml:zip:routes-and-schedules-process-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="routes-and-schedules-process-api-config" api="resource::4c4287b2-7066-4b83-864f-60985a79247e:routes-and-schedules-process-api:1.0.1:raml:zip:routes-and-schedules-process-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="routes-and-schedules-process-api-main">
         <http:listener config-ref="routes-and-schedules-process-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -124,9 +124,9 @@ output application/json
         </error-handler>
     </flow>
     <flow name="get:\booking\(transportType)\routes:routes-and-schedules-process-api-config">
-		<flow-ref doc:name="Flow Reference" doc:id="b4568405-d869-4ba6-8898-3311a262c639" name="routesFlow"/>
+        <flow-ref doc:name="Flow Reference" doc:id="b4568405-d869-4ba6-8898-3311a262c639" name="routesFlow" />
     </flow>
     <flow name="get:\booking\(transportType)\schedules:routes-and-schedules-process-api-config">
-		<flow-ref doc:name="Flow Reference" doc:id="bda63b86-b0e0-420f-bab1-f2af8e885f66" name="scheduleFlow"/>
+        <flow-ref doc:name="Flow Reference" doc:id="bda63b86-b0e0-420f-bab1-f2af8e885f66" name="scheduleFlow" />
     </flow>
 </mule>
