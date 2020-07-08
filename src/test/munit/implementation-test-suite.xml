@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<munit:config name="implementation-test-suite.xml" />
+	<munit:test name="implementation-test-suite-routesFlowTest" doc:id="4fcbc46d-a102-45ff-8dc4-352916e5a346" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock FirstCoach Routes System API Calls" doc:id="d9f21dd8-24b2-455a-b2fc-a347304f191c" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('mock-responses/fc-sys-api-routes-mock-res.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+				
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Transnational Routes System API Calls" doc:id="79b70714-85de-4b37-921f-c92ae4c7f8d6" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('mock-responses/tn-sys-api-routes-mock-res.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+				
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set URI Params" doc:id="afb13761-1983-4a8a-84c7-95297fab68e1" >
+				<munit:attributes value="#[{uriParams : {'transportType' :'SEA'}}]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to routesFlow" doc:id="0329ffaf-c89f-4219-a468-75402dfa0c7c" name="routesFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Check not null" doc:id="d962c862-dbd0-4ceb-bda2-fc00773feb30" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+			<munit-tools:assert-that doc:name="Compare Payload" doc:id="a1fb43fd-39c6-4a41-b2f3-2139fae32bfb" is="#[MunitTools::equalTo(readUrl('classpath://expected-responses/routes-expected-res.json', 'application/json'))]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="implementation-test-suite-scheduleFlowTest" doc:id="e337ea07-82ad-4dde-9dd8-f27d716b715c" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock FirstCoach  Schedules System API Calls" doc:id="23434394-2f6e-4bb0-838b-5f0eec243380" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('mock-responses/fc-sys-api-schedules-mock-res.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Transnational Schedules System API Calls" doc:id="74852b8f-629f-40bd-8bab-4a1cb24fff62" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('mock-responses/tn-sys-api-schedules-mock-res.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set URI n Query Params" doc:id="620c7b1c-6d70-41b1-b5d0-046a426ca057" >
+				<munit:attributes value="#[{uriParams : {'transportType' :'SEA'},queryParams : {'companyCode' :'FC','departureLocationCode' :'BNE','destinationLocationCode' :'BKK','requestTimezone' :'AEST'}}]" />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to scheduleFlow" doc:id="73b411bb-d15e-4ed5-b869-dd307e505bb5" name="scheduleFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Check not null" doc:id="ad45e6bd-6029-4393-91ba-9bd708bd8c97" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+			<munit-tools:assert-that doc:name="Compare Payload" doc:id="1e1d7cff-1059-4997-8bbf-6b320a5661f8" is="#[MunitTools::equalTo(readUrl('classpath://expected-responses/schedules-expected-res.json', 'application/json'))]" expression="#[payload]"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

@@ -1,0 +1,20 @@
+[
+  {
+    "companyCode": "First Coach",
+    "originLocation": {
+      "locationCode": "TH-BKK"
+    },
+    "destinationLocation": {
+      "locationCode": "AU-BNE"
+    }
+  },
+  {
+    "companyCode": "Transnational",
+    "originLocation": {
+      "locationCode": "TH-BKK"
+    },
+    "destinationLocation": {
+      "locationCode": "AU-BNE"
+    }
+  }
+]
