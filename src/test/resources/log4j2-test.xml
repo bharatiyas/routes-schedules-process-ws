@@ -22,7 +22,11 @@
                
         <!-- Mule logger -->        
         <AsyncLogger name="org.mule.runtime.core.internal.processor.LoggerMessageProcessor" level="INFO"/>  
-
+	
+		<!-- For Debugging Secure property issue  -->
+		<AsyncLogger name="org.mule.encryption" level="DEBUG"/>   
+		<AsyncLogger name="com.mulesoft.modules.configuration.properties" level="DEBUG"/> 
+		
         <AsyncRoot level="INFO">
             <AppenderRef ref="Console"/>
         </AsyncRoot>
