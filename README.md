@@ -11,8 +11,8 @@ More about *Routes and Schedules Process API* can be found at https://anypoint.m
 2. Current transport providers are First Coach and Transnational.
 3. FirstCoach Routes API requires Basic Authentication, password for which has been configured and secured using Mulesoft's standard procedure for securing properties
 4. For securing properties:
-    a. Algorithm = Blowfish 
-    b. Mode = CBC 
+    - Algorithm = Blowfish 
+    - Mode = CBC 
    
    **NOTE:** Above details are according to FirstBooking's Organizational Security Policy and has been advised by the IT Security Team
 
@@ -21,8 +21,8 @@ To run the application from Anypoint Studio perform the following steps:
 
 1. Fetch the project from Github
 2. Edit Run Configurations to provide an environment variables: 
-    a. env = dev
-    b. securityKey = fbdevseckey
+    - env = dev
+    - securityKey = fbdevseckey
    
    **NOTE:** For securityKey for other controlled environments please contact the IT Operations Team
    
