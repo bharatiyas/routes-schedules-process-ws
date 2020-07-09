@@ -83,6 +83,31 @@ output application/json
 flatten(payload..payload)]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="843d9dc7-dbd5-4193-9dbe-1fb11ce3954a" >
+				<ee:transform doc:name="Set X-Event-Id" doc:id="7d4116c2-2ec3-48cd-9a61-cab7f4353395" >
+					<ee:message />
+					<ee:variables >
+						<ee:set-variable variableName="outboundHeaders" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"X-Event-Id": correlationId
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+				<ee:transform doc:name="Set Payload" doc:id="be7a3341-b1f1-4272-be08-3698d274f90e" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "Internal Server Error"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
 	</flow>
 	<flow name="scheduleFlow" doc:id="d4f81c92-8f2e-4afe-90e8-f3872a010660" >
 		<set-variable value="#[message.attributes.uriParams.transportType]" doc:name="Set transportType" doc:id="aab2c815-9caa-42ff-a145-c286dfb7e0d1" variableName="transportType"/>
@@ -180,5 +205,30 @@ output application/json
 flatten(payload..payload)]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="de637e5f-49e2-4d0a-96c6-7ba877832fed" >
+				<ee:transform doc:name="Set X-Event-Id" doc:id="24834184-4d75-471f-b2a4-fc624a2e65e1" >
+					<ee:message />
+					<ee:variables >
+						<ee:set-variable variableName="outboundHeaders" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"X-Event-Id": correlationId
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+				<ee:transform doc:name="Set Payload" doc:id="08131705-ae14-4ef4-8231-b30e371d3731" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "Internal Server Error"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
 	</flow>
 </mule>

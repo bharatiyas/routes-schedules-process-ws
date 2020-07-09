@@ -3,7 +3,7 @@
     <http:listener-config name="routes-and-schedules-process-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="${http.port}" />
     </http:listener-config>
-    <apikit:config name="routes-and-schedules-process-api-config" api="resource::4c4287b2-7066-4b83-864f-60985a79247e:routes-and-schedules-process-api:1.0.1:raml:zip:routes-and-schedules-process-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="routes-and-schedules-process-api-config" api="resource::4c4287b2-7066-4b83-864f-60985a79247e:routes-and-schedules-process-api:1.0.2:raml:zip:routes-and-schedules-process-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="routes-and-schedules-process-api-main">
         <http:listener config-ref="routes-and-schedules-process-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
