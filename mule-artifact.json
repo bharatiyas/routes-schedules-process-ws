@@ -1,3 +1,4 @@
 {
-  "minMuleVersion": "4.2.2-hf2"
+  "minMuleVersion": "4.2.2-hf2",
+  "secureProperties": ["securityKey"]
 }
