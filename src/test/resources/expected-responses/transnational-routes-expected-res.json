@@ -7,14 +7,5 @@
     "destinationLocation": {
       "locationCode": "AU-BNE"
     }
-  },
-  {
-    "companyCode": "First Coach",
-    "originLocation": {
-      "locationCode": "TH-BKK"
-    },
-    "destinationLocation": {
-      "locationCode": "AU-BNE"
-    }
   }
 ]

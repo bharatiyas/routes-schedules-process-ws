@@ -9,7 +9,7 @@
 		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
 http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
 	<munit:config name="implementation-test-suite.xml" />
-	<munit:test name="implementation-test-suite-routesFlowTest" doc:id="4fcbc46d-a102-45ff-8dc4-352916e5a346" description="Test" ignore="true">
+	<munit:test name="routesFlowTest-both-companies" doc:id="4fcbc46d-a102-45ff-8dc4-352916e5a346" description="Test">
 		<munit:behavior >
 			<munit-tools:mock-when doc:name="Mock FirstCoach Routes System API Calls" doc:id="d9f21dd8-24b2-455a-b2fc-a347304f191c" processor="http:request">
 				<munit-tools:with-attributes >
@@ -41,7 +41,7 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 			<munit-tools:assert-that doc:name="Compare Payload" doc:id="a1fb43fd-39c6-4a41-b2f3-2139fae32bfb" is="#[MunitTools::equalTo(readUrl('classpath://expected-responses/routes-expected-res.json', 'application/json'))]" expression="#[payload]"/>
 		</munit:validation>
 	</munit:test>
-	<munit:test name="implementation-test-suite-scheduleFlowTest" doc:id="e337ea07-82ad-4dde-9dd8-f27d716b715c" description="Test">
+	<munit:test name="scheduleFlowTest-both-companies" doc:id="e337ea07-82ad-4dde-9dd8-f27d716b715c" description="Test">
 		<munit:behavior >
 			<munit-tools:mock-when doc:name="Mock FirstCoach  Schedules System API Calls" doc:id="23434394-2f6e-4bb0-838b-5f0eec243380" processor="http:request">
 				<munit-tools:with-attributes >
@@ -71,6 +71,50 @@ http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/sc
 			<munit-tools:assert-that doc:name="Compare Payload" doc:id="1e1d7cff-1059-4997-8bbf-6b320a5661f8" is="#[MunitTools::equalTo(readUrl('classpath://expected-responses/schedules-expected-res.json', 'application/json'))]" expression="#[payload]"/>
 		</munit:validation>
 	</munit:test>
+	<munit:test name="routesFlowTest-transnational" doc:id="8dbe6327-d15c-4ef0-aea0-d359921fcbfa" description="Test">
+			<munit:behavior>
+				<munit-tools:mock-when doc:name="Mock Transnational Routes System API Calls" doc:id="e91794de-05d7-453d-b7fe-2e04a1ae196d" processor="http:request">
+					<munit-tools:with-attributes>
+						<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					</munit-tools:with-attributes>
+					<munit-tools:then-return>
+						<munit-tools:payload value="#[MunitTools::getResourceAsString('mock-responses/tn-sys-api-routes-mock-res.json')]" mediaType="application/json" />
+					</munit-tools:then-return>
+				</munit-tools:mock-when>
+			</munit:behavior>
+			<munit:execution>
+				<munit:set-event doc:name="Set URI Params" doc:id="fd226ef8-71a8-4255-ba04-9d4c0ab1eb08">
+				<munit:attributes value="#[{uriParams : {'transportType' :'SEA'}, queryParams : {'companyCode' :'transnational'}}]" />
+				</munit:set-event>
+				<flow-ref doc:name="Flow-ref to routesFlow" doc:id="887a86ce-d3f4-44b3-8f00-ae0078bece76" name="routesFlow" />
+			</munit:execution>
+			<munit:validation>
+				<munit-tools:assert-that doc:name="Check not null" doc:id="df529ee6-eab5-41f6-a547-86a3edcdd286" is="#[MunitTools::notNullValue()]" expression="#[payload]" />
+				<munit-tools:assert-that doc:name="Compare Payload" doc:id="816d89fd-1366-4c87-85f6-b0bab31cad64" is="#[MunitTools::equalTo(readUrl('classpath://expected-responses/transnational-routes-expected-res.json', 'application/json'))]" expression="#[payload]" />
+			</munit:validation>
+		</munit:test>
+	<munit:test name="routesFlowTest-firstcoach" doc:id="6e3e057c-32ab-4b6d-aca8-819d1bea1e95" description="Test">
+			<munit:behavior>
+				<munit-tools:mock-when doc:name="Mock FirstCoach Routes System API Calls" doc:id="2328904c-7709-40cd-9c70-40fba91701e7" processor="http:request">
+					<munit-tools:with-attributes>
+						<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					</munit-tools:with-attributes>
+					<munit-tools:then-return>
+						<munit-tools:payload value="#[MunitTools::getResourceAsString('mock-responses/fc-sys-api-routes-mock-res.json')]" mediaType="application/json" />
+					</munit-tools:then-return>
+				</munit-tools:mock-when>
+			</munit:behavior>
+			<munit:execution>
+				<munit:set-event doc:name="Set URI Params" doc:id="e7ee8b1f-2547-4e0e-8c9a-a88a0bd74a55">
+				<munit:attributes value="#[{uriParams : {'transportType' :'SEA'}, queryParams : {'companyCode' :'firstcoach'}}]" />
+				</munit:set-event>
+				<flow-ref doc:name="Flow-ref to routesFlow" doc:id="6655fd38-d1ca-4333-ad40-9bf6e5bdde6c" name="routesFlow" />
+			</munit:execution>
+			<munit:validation>
+				<munit-tools:assert-that doc:name="Check not null" doc:id="ba5d77fa-2182-460d-8ef0-04b82ec942dc" is="#[MunitTools::notNullValue()]" expression="#[payload]" />
+				<munit-tools:assert-that doc:name="Compare Payload" doc:id="397b9264-737e-4898-a2f0-2fc7310d7922" is="#[MunitTools::equalTo(readUrl('classpath://expected-responses/firstcoach-routes-expected-res.json', 'application/json'))]" expression="#[payload]" />
+			</munit:validation>
+		</munit:test>
 
 
 </mule>
