@@ -161,10 +161,10 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 		<set-variable value="#[message.attributes.queryParams.companyCode]" doc:name="Set companyCode" doc:id="7a3d7118-354f-467e-95a5-110f2eab2636" variableName="companyCode"/>
 		<set-variable value="#[message.attributes.uriParams.transportType]" doc:name="Set transportType" doc:id="5bd36067-0b6e-440d-b7e1-60fbb7ee82b4" variableName="transportType"/>
 		<choice doc:name="Choice" doc:id="e5da5ab5-0451-4570-9426-982a2696c169" >
-			<when expression='#[lower(vars.companyCode) == "transnational"]'>
+			<when expression='#[vars.companyCode == "transnational"]'>
 				<flow-ref doc:name="transnationalRoutesFlowRef" doc:id="55a0d062-5b2c-4c4d-b827-e7378cf8d417" name="transnationalRoutesFlow" />
 			</when>
-			<when expression='#[lower(vars.companyCode) == "firstcoach"]'>
+			<when expression='#[vars.companyCode == "firstcoach"]'>
 				<flow-ref doc:name="firstCoachRoutesFlowRef" doc:id="fa0a3ebe-51bd-4552-b27e-a39c613ed19f" name="firstCoachRoutesFlow" />
 			</when>
 			<otherwise >
@@ -218,10 +218,10 @@ output application/json
 		<set-variable value="#[message.attributes.queryParams.companyCode]" doc:name="Set companyCode" doc:id="bdea76b6-fefa-4488-bbb9-0449cec12677" variableName="companyCode" />
 		<set-variable value="#[message.attributes.uriParams.transportType]" doc:name="Set transportType" doc:id="aab2c815-9caa-42ff-a145-c286dfb7e0d1" variableName="transportType"/>
 		<choice doc:name="Choice" doc:id="bdef8d4b-9f5d-479f-af29-b6fc52ed9810" >
-			<when expression='#[lower(vars.companyCode) == "transnational"]'>
+			<when expression='#[vars.companyCode == "transnational"]'>
 				<flow-ref doc:name="transnationalSchedulesFlowRef" doc:id="640be80c-893b-4e4f-8292-a348130fe56d" name="transnationalSchedulesFlow"/>
 			</when>
-			<when expression='#[lower(vars.companyCode) == "firstcoach"]'>
+			<when expression='#[vars.companyCode == "firstcoach"]'>
 				<flow-ref doc:name="firstCoachSchedulesFlowRef" doc:id="3c51ccd2-4361-4539-b186-d86f288d9b6c" name="firstCoachSchedulesFlow"/>
 			</when>
 			<otherwise >
